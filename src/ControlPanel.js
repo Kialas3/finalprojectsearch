@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Container, Form, Row } from "react-bootstrap"
+import { Form, } from "react-bootstrap"
 
 const ControlPanel = ({ setFromYear, setToYear, setNumOfResults }) => {
 

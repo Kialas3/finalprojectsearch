@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, } from 'react-bootstrap';
+import { Card, } from 'react-bootstrap';
 
 const FetchPaperFromGoogleScholar = ({ searchKeyword, setSearchFromYear, searchToYear, searchNumOfResults }) => {
     const [paperData, setPaperData] = useState(null);

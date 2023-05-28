@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import FetchPaperFromGoogleScholar from './FetchPaperFromGoogleScholar';
 import ControlPanel from './ControlPanel';
 
-import { Button, Container, Grid, TextField } from '@mui/material';
+import { Button, Container, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 // 開兩個terminal
@@ -30,7 +30,7 @@ const App = () => {
     const savedText = sessionStorage.getItem('keywords');
     if (savedText) {
       setText(savedText);
-      setKeywords(text)
+      setKeywords(savedText)
     }
   }, []);
 
