@@ -1,0 +1,7 @@
+[build]
+  publish="build"
+
+[[redirects]]
+  from = "/paper/*"
+  to = "https://serpapi.com/:splat"
+  status = 200
