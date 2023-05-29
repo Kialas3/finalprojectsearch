@@ -1,9 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Card, } from 'react-bootstrap';
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    Link,
+    Paper,
+    Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
+import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
 
-const FetchPaperFromGoogleScholar = ({ searchKeyword, setSearchFromYear, searchToYear, searchNumOfResults }) => {
+const FetchPaperFromGoogleScholar = ({
+    setLoading,
+    searchKeyword,
+    setSearchFromYear,
+    searchToYear,
+    searchNumOfResults,
+}) => {
     const [paperData, setPaperData] = useState(null);
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -16,21 +31,24 @@ const FetchPaperFromGoogleScholar = ({ searchKeyword, setSearchFromYear, searchT
                 // const response = await fetch("http://localhost:3001/paper")
                 //     .then(response => response.json())
 
+                // 會有以下問題 => No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+                // const response = await fetch("https://serpapi.com/searches/bb6e2fcc452dcb5b/6464ec487f8361e3061a9c72.json", { mode: 'cors' })
+                //     .then(response => response.json())
 
                 setPaperData([...response.organic_results]);
             } catch (error) {
-                console.error('Error fetching paper data:', error);
+                console.error("Error fetching paper data:", error);
             }
         };
         fetchData();
-        console.log("==========================================")
-    }, [searchKeyword,
-        setSearchFromYear,
-        searchToYear,
-        searchNumOfResults]);
+    }, [searchKeyword, setSearchFromYear, searchToYear, searchNumOfResults]);
+
+    useEffect(() => {
+        setLoading(false);
+    }, [paperData]);
 
     function saveData(data) {
-        console.log(data)
+        console.log(data);
         // console.log(data.title) // title
         // console.log(data.publication_info.authors) // authors
 
@@ -38,45 +56,60 @@ const FetchPaperFromGoogleScholar = ({ searchKeyword, setSearchFromYear, searchT
     }
 
     return (
-        <div style={{ overflowY: "auto", height: "90vh" }} >
-            <div className='col'>
-                {paperData && paperData.map((data, index) => {
-                    return (
-                        <div className='row-10' key={index}>
-                            <div className='card' style={{ margin: "10px" }} >
-                                <div className='card-body'>
-                                    <div className="card-title card-title-text" color="blue">
-                                        <Card.Link href={data.link} className='card-link-noUnderline'>
-                                            {data.title}
-                                        </Card.Link>
-                                    </div>
-                                    <div className='card-text' style={{ margin: "5px" }}>
-                                        {data.publication_info.summary}
-                                    </div>
-                                    {data.resources && <Card.Link href={data.resources[0].link}>
-                                        <button type="button" class="btn btn-outline-info" style={{ margin: "5px" }}>
+        <Container sx={{ marginTop: "10px" }}>
+            <AppBar
+                position="static"
+                sx={{ borderTopRightRadius: "10px", borderTopLeftRadius: "10px" }}
+            >
+                <Typography variant="h4" sx={{ margin: "10px" }}>
+                    Search " {searchKeyword} " Results
+                </Typography>
+            </AppBar>
+            <Grid sx={{ overflowY: "auto", maxHeight: "72vh" }}>
+                {paperData &&
+                    paperData.map((data, index) => {
+                        return (
+                            <Paper
+                                elevation={3}
+                                sx={{ margin: "10px", marginBottom: "20px" }}
+                                key={index}
+                            >
+                                <Typography variant="h5" sx={{ margin: "5px" }}>
+                                    <Link href={data.link} underline="none">
+                                        {data.title}
+                                    </Link>
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    {data.publication_info.summary}
+                                </Typography>
+
+                                {data.resources && (
+                                    <Link href={data.resources[0].link}>
+                                        <Button
+                                            variant="outlined"
+                                            sx={{ margin: "10px", marginBottom: "15px" }}
+                                            startIcon={<InsertLinkOutlinedIcon />}
+                                        >
                                             PDF Link
-                                        </button>
-                                    </Card.Link>}
+                                        </Button>
+                                    </Link>
+                                )}
 
-                                    {/* {data.resources &&
-                                        <Button variant="outline-danger"
-                                            style={{ margin: "5px" }}>
-                                            PDF Save
-                                        </Button>} */}
-
-                                    {<button type="button" class="btn btn-outline-danger"
-                                        style={{ margin: "5px" }}
-                                        onClick={() => saveData(data)}>
+                                {
+                                    <Button
+                                        variant="outlined"
+                                        sx={{ margin: "10px", marginBottom: "15px" }}
+                                        onClick={() => saveData(data)}
+                                        startIcon={<SaveAsRoundedIcon />}
+                                    >
                                         console.log information
-                                    </button>}
-                                </div>
-                            </div>
-                        </div>
-                    )
-                })}
-            </div>
-        </div>
+                                    </Button>
+                                }
+                            </Paper>
+                        );
+                    })}
+            </Grid>
+        </Container>
     );
 };
 
