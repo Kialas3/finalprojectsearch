@@ -92,7 +92,7 @@ const App = () => {
             onClick={startSearch}
             loading={loading}
             loadingPosition="start"
-            startIcon={<FindInPageOutlinedIcon />}>
+            startIcon={< FindInPageOutlinedIcon />}>
             Search
           </LoadingButton>
         </Grid2>
